@@ -37,7 +37,7 @@ public class VehicleController {
         return vehicleRepository.findAvailable().stream().map(this::toResponse).toList();
     }
 
-    @PostMapping("{id}}/rent")
+    @PostMapping("{id}/rent")
     public void rent(@PathVariable String id){
         rentVehicleUseCase.execute(id);
     }

@@ -1,5 +1,6 @@
 package com.matidev.vehiclerental.application.usecase;
 
+import com.matidev.vehiclerental.application.exception.VehicleNotFoundException;
 import com.matidev.vehiclerental.domain.model.Vehicle;
 import com.matidev.vehiclerental.domain.repository.VehicleRepository;
 
@@ -18,7 +19,7 @@ public class RentVehicleUseCase {
      */
     public void execute(String vehicleId){
         Vehicle vehicle = vehicleRepository.findById(vehicleId).
-                orElseThrow(()->new IllegalStateException("Vehicle not found"));
+                orElseThrow(()->new VehicleNotFoundException("Vehicle not found"));
 
         vehicle.rented();
         vehicleRepository.save(vehicle);
