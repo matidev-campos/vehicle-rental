@@ -1,9 +1,10 @@
 package com.matidev.vehiclerental.infrastructure.controller;
 
+import com.matidev.vehiclerental.application.usecase.CreateVehicleUseCase;
+import com.matidev.vehiclerental.application.usecase.GetAvailableVehiclesUseCase;
 import com.matidev.vehiclerental.application.usecase.RentVehicleUseCase;
 import com.matidev.vehiclerental.application.usecase.ReturnVehicleUseCase;
 import com.matidev.vehiclerental.domain.model.Vehicle;
-import com.matidev.vehiclerental.domain.repository.VehicleRepository;
 import com.matidev.vehiclerental.infrastructure.controller.dto.request.CreateVehicleRequest;
 import com.matidev.vehiclerental.infrastructure.controller.dto.response.VehicleResponse;
 import org.springframework.web.bind.annotation.*;
@@ -14,27 +15,30 @@ import java.util.List;
 @RequestMapping("/api/v1/vehicles")
 public class VehicleController {
 
-    private final VehicleRepository vehicleRepository;
     private final RentVehicleUseCase rentVehicleUseCase;
     private final ReturnVehicleUseCase returnVehicleUseCase;
+    private final CreateVehicleUseCase createVehicleUseCase;
+    private final GetAvailableVehiclesUseCase getAvailableVehiclesUseCase;
 
-    public VehicleController(VehicleRepository vehicleRepository, RentVehicleUseCase rentVehicleUseCase, ReturnVehicleUseCase returnVehicleUseCase) {
-        this.vehicleRepository = vehicleRepository;
+    public VehicleController(RentVehicleUseCase rentVehicleUseCase,
+                             ReturnVehicleUseCase returnVehicleUseCase,
+                             CreateVehicleUseCase createVehicleUseCase,
+                             GetAvailableVehiclesUseCase getAvailableVehiclesUseCase) {
         this.rentVehicleUseCase = rentVehicleUseCase;
         this.returnVehicleUseCase = returnVehicleUseCase;
+        this.createVehicleUseCase = createVehicleUseCase;
+        this.getAvailableVehiclesUseCase = getAvailableVehiclesUseCase;
     }
 
     @PostMapping
     public VehicleResponse create(@RequestBody CreateVehicleRequest request){
-        Vehicle vehicle = new Vehicle(request.brand(), request.model());
-        Vehicle saved = vehicleRepository.save(vehicle);
-
-        return toResponse(saved);
+        Vehicle vehicle = createVehicleUseCase.execute(request.brand(), request.model());
+        return toResponse(vehicle);
     }
 
     @GetMapping("/available")
     public List<VehicleResponse> getVehiclesAvailable(){
-        return vehicleRepository.findAvailable().stream().map(this::toResponse).toList();
+        return getAvailableVehiclesUseCase.execute().stream().map(this::toResponse).toList();
     }
 
     @PostMapping("{id}/rent")
