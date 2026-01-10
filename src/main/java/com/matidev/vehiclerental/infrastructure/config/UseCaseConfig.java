@@ -1,5 +1,7 @@
 package com.matidev.vehiclerental.infrastructure.config;
 
+import com.matidev.vehiclerental.application.usecase.CreateVehicleUseCase;
+import com.matidev.vehiclerental.application.usecase.GetAvailableVehiclesUseCase;
 import com.matidev.vehiclerental.application.usecase.RentVehicleUseCase;
 import com.matidev.vehiclerental.application.usecase.ReturnVehicleUseCase;
 import com.matidev.vehiclerental.domain.repository.VehicleRepository;
@@ -17,5 +19,15 @@ public class UseCaseConfig {
     @Bean
     public ReturnVehicleUseCase returnVehicleUseCase(VehicleRepository vehicleRepository){
         return new ReturnVehicleUseCase(vehicleRepository);
+    }
+
+    @Bean
+    public CreateVehicleUseCase createVehicleUseCase(VehicleRepository vehicleRepository){
+        return new CreateVehicleUseCase(vehicleRepository);
+    }
+
+    @Bean
+    public GetAvailableVehiclesUseCase getAvailableVehiclesUseCase(VehicleRepository vehicleRepository){
+        return new GetAvailableVehiclesUseCase(vehicleRepository);
     }
 }
