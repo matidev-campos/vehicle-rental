@@ -11,8 +11,8 @@ public class VehicleMapper {
     public static VehicleDocument toDocument(Vehicle vehicle){
         VehicleDocument vehicleDocument = new VehicleDocument();
         vehicleDocument.setId(vehicle.getId());
-        vehicleDocument.setBrand(vehicleDocument.getBrand());
-        vehicleDocument.setModel(vehicleDocument.getModel());
+        vehicleDocument.setBrand(vehicle.getBrand());
+        vehicleDocument.setModel(vehicle.getModel());
         vehicleDocument.setAvailable(vehicle.isAvailable());
         return vehicleDocument;
     }
@@ -20,7 +20,7 @@ public class VehicleMapper {
     public static Vehicle toDomain(VehicleDocument vehicleDocument){
         Vehicle vehicle = new Vehicle(vehicleDocument.getBrand(), vehicleDocument.getModel());
 
-        if(!vehicle.isAvailable()){
+        if(!vehicleDocument.getAvailable()){
             vehicle.rented();
         }
 

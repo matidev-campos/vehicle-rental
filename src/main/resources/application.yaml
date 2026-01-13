@@ -1,3 +1,6 @@
 spring:
   application:
     name: vehicle-rental
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/vehiclerental
